@@ -1,2 +1,2 @@
 # plant-identifier
-Aplikacja do identyfikacji roślin na podstawie zdjęć.
+An application for identifying plants based on photos.
