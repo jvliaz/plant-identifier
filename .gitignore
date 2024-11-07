@@ -1,0 +1,35 @@
+# Ignoruj pliki konfiguracyjne środowiska wirtualnego
+venv/
+.env
+*.env
+
+# Ignoruj pliki cache Pythona
+__pycache__/
+*.py[cod]
+
+# Ignoruj logi i pliki tymczasowe
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Ignoruj pliki generowane przez testy i debugowanie
+.coverage
+.tox/
+*.cover
+nosetests.xml
+coverage.xml
+*.spec
+
+# Ignoruj pliki generowane przez edytory i IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignoruj pliki związane z pakietowaniem i dystrybucją
+dist/
+build/
+*.egg-info/
+.eggs/
