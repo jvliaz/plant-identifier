@@ -9,3 +9,9 @@ acer_negundo
 aesculus_glabra
 albizia_julibrissin
 betula_nigra
+
+carya_cordiformis
+catalpa_speciosa
+corylus_colurna
+koelreuteria_paniculata
+magnolia_stellata
