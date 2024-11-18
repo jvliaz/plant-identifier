@@ -3,8 +3,8 @@ import random
 import shutil
 
 # Ścieżka do głównego folderu z danymi
-base_dir = 'data/leafsnap-dataset/dataset/images'
-segmented_base_dir = 'data/leafsnap-dataset/dataset/segmented'
+base_dir = 'data/leafsnap-dataset/images'
+segmented_base_dir = 'data/leafsnap-dataset/segmented'
 # Folder docelowy
 output_dir = 'data/dataset'
 
