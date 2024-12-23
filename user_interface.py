@@ -5,14 +5,27 @@ from PIL import Image, ImageTk
 import numpy as np
 import tensorflow as tf
 
-# === Wczytanie modelu ===
-try:
-    model = tf.keras.models.load_model('model.keras')
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-    class_names = ["acer_campestre", "acer_ginnala", "acer_negundo", "aesculus_glabra", "albizia_julibrissin", "amelanchier_arborea", "betula_nigra", "carya_cordiformis", "catalpa_speciosa", "corylus_colurna", "ficus_carica", "gleditsia_triacanthos", "koelreuteria_paniculata", "magnolia_stellata", "quercus_velutina"]  # Nazwy klas
-except Exception as e:
-    messagebox.showerror("Błąd", f"Nie udało się załadować modelu: {str(e)}")
-    model = None
+
+# === Inicjalizacja modelu ===
+def load_model():
+    """
+    Wczytuje model sieci neuronowej.
+    """
+    try:
+        model = tf.keras.models.load_model('model.keras')
+        model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+        class_names = [
+            "acer_campestre", "acer_ginnala", "acer_negundo", "aesculus_glabra", "albizia_julibrissin",
+            "amelanchier_arborea", "betula_nigra", "carya_cordiformis", "catalpa_speciosa", "corylus_colurna",
+            "ficus_carica", "gleditsia_triacanthos", "koelreuteria_paniculata", "magnolia_stellata", "quercus_velutina"
+        ]
+        return model, class_names
+    except Exception as e:
+        messagebox.showerror("Błąd", f"Nie udało się załadować modelu: {str(e)}")
+        return None, []
+
+
+model, class_names = load_model()
 
 
 # === Funkcje aplikacji ===
@@ -21,7 +34,6 @@ def load_image():
     Funkcja do ładowania obrazu i wyświetlania go w aplikacji.
     """
     try:
-        # Otworzenie okna dialogowego do wyboru pliku
         file_path = filedialog.askopenfilename(
             filetypes=[
                 ("JPEG Files", "*.jpg"),
@@ -33,11 +45,11 @@ def load_image():
         if not file_path:
             return  # Użytkownik anulował wybór
 
-        # Wczytaj obraz i zmień jego rozmiar
         global loaded_img  # Przechowuj oryginalny obraz
         loaded_img = Image.open(file_path)
 
-        display_img = loaded_img.resize((200, 200))  # Dopasowanie do wyświetlania
+        # Zmiana rozmiaru do wyświetlania
+        display_img = loaded_img.resize((200, 200))
         display_img = ImageTk.PhotoImage(display_img)
 
         # Wyświetl obraz w oknie
@@ -62,12 +74,10 @@ def predict_plant():
     try:
         # Dopasowanie obrazu do wymagań modelu
         img = loaded_img.resize((128, 128))  # Dopasowanie do wejścia modelu
-        print(f"Wymiary załadowanego obrazu: {img.size}")
         img = np.array(img) / 255.0  # Normalizacja pikseli (0-1)
-        print(f"Zakres pikseli po normalizacji: min={np.min(img)}, max={np.max(img)}")
         img = np.expand_dims(img, axis=0)  # Dodanie wymiaru batch
 
-        # Przewidywanie klasy za pomocą modelu
+        # Przewidywanie klasy
         predictions = model.predict(img)
         predicted_class = np.argmax(predictions, axis=1)[0]
         confidence = predictions[0][predicted_class] * 100
@@ -83,112 +93,70 @@ def predict_plant():
     result_text.configure(state="disabled")
 
 
-# === Funkcje obsługi efektów hover ===
-def on_hover(event):
-    event.widget.configure(bg="black", fg="white")
+def configure_hover_effects(button):
+    """
+    Dodaje efekty hover do przycisku.
+    """
+    def on_hover(event):
+        event.widget.configure(bg="black", fg="white")
+
+    def on_leave(event):
+        event.widget.configure(bg=button.default_bg, fg=button.default_fg)
+
+    button.bind("<Enter>", on_hover)
+    button.bind("<Leave>", on_leave)
 
 
-def on_leave(event):
-    event.widget.configure(bg=event.widget.default_bg, fg=event.widget.default_fg)
-
-
-# === Konfiguracja kolorów ===
-bg_color = "#4f4f4f"
-panel_bg_color = "#5e5e5e"
-button_fg_color = "#000000"
-text_fg_color = "#000000"
-button_style = {
-    "font": ("Helvetica", 14, "bold"),
-    "bd": 1,
-    "relief": "solid",
-    "highlightbackground": "#000000",
-    "highlightthickness": 1,
-}
-
-
-# === Główna konfiguracja GUI ===
+# === Konfiguracja GUI ===
 root = tk.Tk()
 root.title("Rozpoznawanie Roślin")
-root.geometry("550x750")
-root.configure(bg=bg_color)
+root.geometry("550x800")
+root.configure(bg="#4f4f4f")
 
 # === Logo aplikacji ===
 logo_path = os.path.join(os.getcwd(), "images", "logo.png")
 try:
-    logo = Image.open(logo_path)
-    logo = logo.resize((300, 300))
+    logo = Image.open(logo_path).resize((300, 300))
     logo = ImageTk.PhotoImage(logo)
-    logo_label = tk.Label(root, image=logo, bg=bg_color)
-    logo_label.image = logo
-    logo_label.pack(pady=10)
+    tk.Label(root, image=logo, bg="#4f4f4f").pack(pady=10)
 except FileNotFoundError:
-    tk.Label(
-        root,
-        text="Nie znaleziono logo!",
-        font=("Helvetica", 18, "bold"),
-        bg=bg_color,
-        fg="red"
-    ).pack(pady=10)
+    tk.Label(root, text="Nie znaleziono logo!", font=("Helvetica", 18, "bold"), bg="#4f4f4f", fg="red").pack(pady=10)
 
-# === Ramka na tytuł i przyciski ===
-frame = tk.Frame(root, bg=bg_color)
+# === Tytuł i ramka ===
+frame = tk.Frame(root, bg="#4f4f4f")
 frame.pack(pady=10)
 
-title_label = tk.Label(
-    frame,
-    text="Załaduj zdjęcie rośliny",
-    font=("Helvetica", 18, "bold"),
-    bg=bg_color,
-    fg=text_fg_color
-)
-title_label.pack(pady=5)
+tk.Label(
+    frame, text="Załaduj zdjęcie rośliny", font=("Helvetica", 18, "bold"), bg="#4f4f4f", fg="black"
+).pack(pady=5)
 
-# === Panel do wyświetlania obrazu ===
-panel = tk.Label(root, bg=bg_color)
+# === Panel obrazu ===
+panel = tk.Label(root, bg="#4f4f4f")
 panel.pack(padx=5, pady=5)
 
 # === Przyciski ===
-# Wybierz zdjęcie
 load_button = tk.Button(
-    frame,
-    text="Wybierz zdjęcie",
-    command=load_image,
-    bg="#6BBF59",
-    fg=button_fg_color,
-    **button_style
+    frame, text="Wybierz zdjęcie", command=load_image, bg="#6BBF59", fg="black", font=("Helvetica", 14, "bold"),
+    bd=1, relief="solid"
 )
 load_button.default_bg = "#6BBF59"
-load_button.default_fg = button_fg_color
+load_button.default_fg = "black"
 load_button.pack(pady=5)
-load_button.bind("<Enter>", on_hover)
-load_button.bind("<Leave>", on_leave)
+configure_hover_effects(load_button)
 
-# Rozpoznaj roślinę
 predict_button = tk.Button(
-    root,
-    text="Rozpoznaj roślinę",
-    command=predict_plant,
-    bg="#4682B4",
-    fg=button_fg_color,
-    **button_style
+    root, text="Rozpoznaj roślinę", command=predict_plant, bg="#4682B4", fg="black", font=("Helvetica", 14, "bold"),
+    bd=1, relief="solid"
 )
 predict_button.default_bg = "#4682B4"
-predict_button.default_fg = button_fg_color
+predict_button.default_fg = "black"
 predict_button.pack(pady=10)
-predict_button.bind("<Enter>", on_hover)
-predict_button.bind("<Leave>", on_leave)
+configure_hover_effects(predict_button)
 
-# === Obszar tekstowy na wyniki ===
+# === Pole tekstowe na wyniki ===
 result_text = tk.Text(
-    root,
-    height=2,
-    width=50,
-    wrap="word",
-    font=("Helvetica", 12),
-    bg=panel_bg_color,
-    fg=text_fg_color,
-    relief="solid",
-    borderwidth=2
+    root, height=2, width=50, wrap="word", font=("Helvetica", 12), bg="#5e5e5e", fg="black",
+    relief="solid", borderwidth=2
 )
 result_text.pack(pady=5)
 result_text.insert("end", "Wyniki rozpoznawania pojawią się tutaj.")

@@ -8,10 +8,10 @@ segmented_base_dir = 'data/leafsnap-dataset/segmented'
 # Folder docelowy
 output_dir = 'data/dataset'
 
-# Ustalenie proporcji
-train_ratio = 0.7
-validation_ratio = 0.15
-test_ratio = 0.15
+# Ustalenie proporcji do podziału zdjęć
+train_ratio = 0.7       # 70%
+validation_ratio = 0.15     # 15%
+test_ratio = 0.15       # 15%
 
 # Sprawdzenie, czy folder wyjściowy już istnieje
 if not os.path.exists(output_dir):
