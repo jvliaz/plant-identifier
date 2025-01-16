@@ -17,7 +17,7 @@ Zbiór testowy: Używany do ostatecznej oceny wydajności modelu po zakończeniu
 Podział danych
 Dane są zorganizowane w następujący sposób:
 
-Dataset/
+images/
 ├── train/
 │   ├── lab/
 │   ├── field/
@@ -35,11 +35,10 @@ Dataset/
 Plik dataset-images.txt
 Zawiera listę wszystkich obrazów w formacie oddzielonym tabulatorami. Pierwsza linia to nagłówek opisujący każdą kolumnę:
 
-file_id    image_path   segmented_path    species    source
+file_id    image_path    species    source
 
 Każda linia zawiera informacje o pojedynczym obrazie, składającą się z pięciu pól, oddzielonych tabulatorami:
 - file_id: Unikalny identyfikator numeryczny dla każdego obrazu. Nie są one gwarantowane jako kolejne lub w porządku. Nie zmienią się w przyszłych wersjach zbioru danych.
 - image_path: Ścieżka do oryginalnego obrazu.
-- segmented_path: Ścieżka do wersji segmentowanej obrazu.
 - species: Nazwa gatunku przedstawionego na obrazie. Może zawierać spacje i myślniki, oraz występuje w mieszanym formacie (wielkie i małe litery).
 - source: Źródło obrazu. Może to być 'lab' lub 'field'.

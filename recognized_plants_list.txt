@@ -1,0 +1,16 @@
+Lista gatunków roślin rozpoznawanych przez sieć CNN:
+Acer campestre – Klon polny
+Amelanchier arborea – Świdośliwa drzewiasta
+Ficus carica – Fikus pospolity (figowiec)
+Gleditsia triancanthos – Glediczja trójcierniowa
+Quercus velutina – Dąb aksamitny
+Acer ginnala – Klon Ginnala
+Acer negundo – Klon strzępiastokwiatowy
+Aesculus glabra – Kasztanowiec łysawy
+Albizia julibrissin – Albicja jedwabna
+Betula nigra – Brzoza czarna
+Carya cordiformis – Orzech sercowaty
+Catalpa speciosa – Katalpa zwyczajna
+Corylus colurna – Leszczyna turecka
+Koelreuteria paniculata – Perukowiec podolski
+Magnolia stellata – Magnolia gwiaździsta
