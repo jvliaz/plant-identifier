@@ -52,8 +52,8 @@ def load_image():
         panel.configure(image=display_img)
         panel.image = display_img
 
-        # Aktywacja przycisku "Rozpoznaj roślinę" po załadowaniu obrazu
-        predict_button.config(state=tk.NORMAL)
+        # # Aktywacja przycisku "Rozpoznaj roślinę" po załadowaniu obrazu
+        # predict_button.config(state=tk.NORMAL)
 
     except Exception as e:
         messagebox.showerror("Błąd", f"Nie udało się załadować obrazu: {str(e)}")
@@ -273,7 +273,7 @@ configure_hover_effects(load_button)
 
 predict_button = tk.Button(
     root, text="Rozpoznaj roślinę", command=predict_plant, bg="#2E512E", fg="black",
-    font=("Gill Sans Ultra Bold", 14, "bold"), bd=1, relief="solid", state=tk.DISABLED
+    font=("Gill Sans Ultra Bold", 14, "bold"), bd=1, relief="solid"
 )
 predict_button.default_bg = "#2E512E"
 predict_button.default_fg = "black"
