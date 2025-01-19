@@ -52,9 +52,6 @@ def load_image():
         panel.configure(image=display_img)
         panel.image = display_img
 
-        # # Aktywacja przycisku "Rozpoznaj roślinę" po załadowaniu obrazu
-        # predict_button.config(state=tk.NORMAL)
-
     except Exception as e:
         messagebox.showerror("Błąd", f"Nie udało się załadować obrazu: {str(e)}")
 
@@ -84,7 +81,6 @@ def predict_plant():
 
         result = f"Przewidywany gatunek: {class_names[predicted_class]}\nPewność: {confidence:.2f}%"
         show_description_and_link(predicted_class)  # Wyświetl opis i link po przewidywaniu
-        enable_plant_button(class_names[predicted_class])  # Aktywuj przycisk dla rozpoznanego gatunku
 
     except Exception as e:
         result = f"Błąd przewidywania: {str(e)}"
@@ -207,14 +203,6 @@ def show_description_and_link(predicted_class):
 def open_link(plant_name):
     url = plant_links.get(plant_name, "#")
     webbrowser.open(url)
-
-
-# Funkcja do pokazania przycisku tylko dla rozpoznanej rośliny
-def enable_plant_button(plant_name):
-    """
-    Ta funkcja aktywuje przycisk oraz wyświetla odpowiedni opis rośliny.
-    """
-    link_button.config(state=tk.NORMAL)  # Aktywuje przycisk z linkiem do Wikipedii
 
 
 def configure_hover_effects(button):
